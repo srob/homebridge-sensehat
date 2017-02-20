@@ -1,35 +1,35 @@
 {
-  "name": "homebridge-sensehat",
-  "version": "0.0.1",
-  "description": "homebridge plugin for Sense Hat equipped Raspberry PI",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/srob/homebridge-sensehat.git"
-  },
-  "keywords": [
-    "homebridge-plugin",
-    "sensehat",
-    "temperature",
-    "humidity",
-    "pressure",
-    "sensor",
-    "lamp"
-  ],
-  "author": "srob",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/srob/homebridge-sensehat/issues"
-  },
-  "engines": {
-    "node": ">=6.0.0",
-    "homebridge": ">=0.2.0"
-  },
-  "homepage": "https://github.com/srob/homebridge-sensehat#readme",
-  "dependencies": {
-    "hap-nodejs-community-types": "https://github.com/homespun/hap-nodejs-community-types.git"
-  }
+    "name": "homebridge-sensehat",
+    "version": "0.0.1",
+    "description": "homebridge plugin for Sense Hat equipped Raspberry PI",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/srob/homebridge-sensehat.git"
+    },
+    "keywords": [
+        "homebridge-plugin",
+        "sensehat",
+        "temperature",
+        "humidity",
+        "pressure",
+        "sensor",
+        "lamp"
+    ],
+    "author": "srob",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/srob/homebridge-sensehat/issues"
+    },
+    "engines": {
+        "node": ">=6.0.0",
+        "homebridge": ">=0.2.0"
+    },
+    "homepage": "https://github.com/srob/homebridge-sensehat#readme",
+    "dependencies": {
+        "hap-nodejs-community-types": "https://github.com/homespun/hap-nodejs-community-types.git"
+    }
 }
