@@ -6,6 +6,7 @@ let Service, Characteristic;
 let temperature, humidity, pressure;
 let CommunityTypes;
 let hue, saturation, brightness, power;
+let script_path, led_interval, sensors_interval
 
 module.exports = (homebridge) => {
     Service = homebridge.hap.Service;
@@ -21,6 +22,13 @@ class SenseHatPlugin {
         this.name_temperature = config.name_temperature || this.name;
         this.name_humidity = config.name_humidity || this.name;
         this.name_presure = config.name_pressure || this.name;
+        script_path = config.script_path || "/home/pi/homebridge-sensehat/";
+        led_interval = config.led_interval || 2;
+        sensors_interval = config.sensors_interval || 10;
+
+        // seconds to milliseconds
+        led_interval = led_interval * 1000;
+        sensors_interval = sensors_interval * 1000;
 
         hue = brightness = saturation = 0;
         power = 0;
@@ -53,6 +61,8 @@ class SenseHatPlugin {
             .getCharacteristic(Characteristic.CurrentTemperature)
             .on('get', this.getCurrentTemperature.bind(this));
 
+        // adding air pressure characteristic to temperature service, this enables the eve app to
+        // display the air pressure.
         this.temperatureService.addCharacteristic(CommunityTypes.AtmosphericPressureLevel);
         this.temperatureService.getCharacteristic(CommunityTypes.AtmosphericPressureLevel)
             .on('get', this.getCurrentPressure.bind(this));
@@ -62,6 +72,8 @@ class SenseHatPlugin {
             .getCharacteristic(Characteristic.CurrentRelativeHumidity)
             .on('get', this.getCurrentRelativeHumidity.bind(this));
 
+        // air pressure also published as a separate service, though displaying it
+        // is not currently supported by any known app.
         this.pressureService = new CommunityTypes.AtmosphericPressureSensor(this.name_pressure);
         this.pressureService
             .getCharacteristic(CommunityTypes.AtmosphericPressureLevel)
@@ -69,12 +81,13 @@ class SenseHatPlugin {
 
         this.readSensors();
 
-        setInterval(this.readSensors, 10000);
-        setInterval(this.setLeds, 2000);
+        setInterval(this.readSensors, sensors_interval);
+        setInterval(this.setLeds, led_interval);
     }
 
     readSensors() {
-        exec('python /home/pi/homebridge-sensehat/sensors.py', (error, stdout, stderr) => {
+        var cmdLine = "python " + script_path + "sensors.py";
+        exec(cmdLine, (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
@@ -84,12 +97,13 @@ class SenseHatPlugin {
             temperature = parseFloat(values[0]);
             humidity = parseFloat(values[1]);
             pressure = parseFloat(values[2]);
+            console.log(temperature, humidity, pressure);
         });
     }
 
     setLeds() {
         console.log(hue, saturation, brightness, power);
-        var cmdLine = "python /home/pi/homebridge-sensehat/leds.py " +
+        var cmdLine = "python " + script_path + "leds.py " +
             hue + " " + saturation + " " + brightness + " " + power;
         exec(cmdLine, (error, stdout, stderr) => {
             if (error) {

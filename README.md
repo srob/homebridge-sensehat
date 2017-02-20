@@ -10,18 +10,21 @@ The real work is performed by two small Python programs: leds.py is used for con
 3.	Update your configuration file. See below for an example.
 
 ## Notes
-1. The paths to the two python scripts are currently hardcoded.
-2. The user under which homebridge runs (often homebridge) needs to be able to use the Sense HAT API, the easiest way to do this is to make the user a member of the groups video, i2c (and others).
+1. script_path (with trailing /) should point to the directory where the two python scripts are located.
+2. The user under which homebridge runs (often homebridge) needs to be able to use the Sense HAT API, the easiest way to do this is to make the user a member of the groups video, i2c (and others, to be documented).
 
 ## Configuration
 
-Example configuration:
+Example configuration (polling intervals default to indicated seconds):
 
 ```json
   "accessories": [
     {
       "accessory": "SenseHat",
-      "name": "Sense Hat"
+      "name": "Sense Hat",
+      "script_path": "path to python scripts",
+      "led_interval": 2,
+      "sensors_interval": 10
     }
   ]
 ```
